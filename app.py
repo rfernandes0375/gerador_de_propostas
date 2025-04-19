@@ -117,6 +117,8 @@ def converter_para_pdf(odt_bytes, nome_arquivo_base):
         r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
         "/usr/bin/libreoffice",
         "/Applications/LibreOffice.app/Contents/MacOS/soffice"
+        "/usr/bin/libreoffice",
+        "/usr/bin/soffice"
     ]
 
     for path in paths_to_try:
