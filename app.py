@@ -11,6 +11,8 @@ import sys
 import re
 import zipfile
 import subprocess
+import tempfile
+temp_dir = tempfile.gettempdir()
 
 # --- FUNÇÕES AUXILIARES (Mantidas exatamente como no original) ---
 
