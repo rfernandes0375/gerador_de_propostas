@@ -153,7 +153,7 @@ def converter_para_pdf(odt_bytes, nome_arquivo_base):
 
         # Usar Popen para melhor controle, especialmente no Windows
         process = subprocess.Popen(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=(os.name == 'nt'))
-        stdout, stderr = process.communicate(timeout=60) # Timeout aumentado
+        stdout, stderr = process.communicate(timeout=120) # Timeout aumentado
 
         if process.returncode != 0:
             error_message = stderr.decode('utf-8', errors='ignore')
