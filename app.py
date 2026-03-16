@@ -413,7 +413,6 @@ load_css()
 def render_header():
     st.markdown("""
     <div class="header-container">
-        <img class="logo-img" src="https://i.postimg.cc/52h7yKQY/ajce.png?text=AJCE+BRASIL" alt="Logo Jardim Equipamentos">
         <img class="logo-img" src="https://i.postimg.cc/qqvQS9S9/jardim.png?text=AJCE+BRASIL" alt="Logo Jardim Equipamentos">
         <h1 class="header-title">Gerador de Propostas</h1>
     </div>
