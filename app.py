@@ -266,7 +266,7 @@ def criar_substituicoes(dados):
 # --- Configuração da Página Streamlit ---
 st.set_page_config(
     page_title="Gerador de Propostas Jardim Equipamentos",
-    page_icon="https://i.postimg.cc/cHVj6Mk6/logo.png?text=AJCE+BRASIL",  # Pode usar URL diretamente
+    page_icon="https://i.postimg.cc/qqvQS9S9/jardim.png?text=AJCE+BRASIL",  # Pode usar URL diretamente
     layout="wide",
     initial_sidebar_state="collapsed" # Começa com sidebar recolhida
 )
@@ -413,7 +413,7 @@ load_css()
 def render_header():
     st.markdown("""
     <div class="header-container">
-        <img class="logo-img" src="https://i.postimg.cc/cHVj6Mk6/logo.png?text=AJCE+BRASIL" alt="Logo Jardim Equipamentos">
+        <img class="logo-img" src="https://i.postimg.cc/52h7yKQY/ajce.png?text=AJCE+BRASIL" alt="Logo Jardim Equipamentos">
         <h1 class="header-title">Gerador de Propostas</h1>
     </div>
     """, unsafe_allow_html=True)
