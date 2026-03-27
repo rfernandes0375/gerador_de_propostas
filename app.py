@@ -118,8 +118,7 @@ def converter_para_pdf(odt_bytes, nome_arquivo_base):
         r"C:\Program Files\LibreOffice\program\soffice.exe",
         r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
         "/usr/bin/libreoffice",
-        "/Applications/LibreOffice.app/Contents/MacOS/soffice"
-        "/usr/bin/libreoffice",
+        "/Applications/LibreOffice.app/Contents/MacOS/soffice",
         "/usr/bin/soffice"
     ]
 
@@ -275,134 +274,180 @@ st.set_page_config(
 def load_css():
     st.markdown("""
     <style>
-        /* Estilos gerais */
-        .main .block-container {
-             padding-top: 2rem; /* Adiciona espaço no topo */
-             padding-bottom: 2rem;
-             padding-left: 2rem;
-             padding-right: 2rem;
+        /* Esconder a marca do Streamlit */
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+
+        /* Fundo principal estilo "Dark Slate" Moderno */
+        [data-testid="stAppViewContainer"] {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08), transparent 25%);
+            color: #f8fafc;
         }
-        .main {
-             background-color: #f0f2f6; /* Um cinza um pouco mais claro */
+
+        .main .block-container {
+             padding-top: 1rem;
+             padding-bottom: 2rem;
+             max-width: 1000px;
+        }
+
+        /* Títulos e Textos */
+        h1, h2, h3, h4, h5, h6, p, label, .stMarkdown {
+            color: #f8fafc !important;
+            font-family: 'Inter', sans-serif !important;
         }
 
         /* Cabeçalho com logo */
         .header-container {
             display: flex;
-            flex-direction: column; /* Empilha logo e título */
-            align-items: center; /* Centraliza horizontalmente */
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            margin-bottom: 2rem; /* Espaço abaixo do header */
-            background-color: #ffffff; /* Fundo branco para o header */
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2.5rem;
+            margin-top: 1rem;
         }
-
         .logo-img {
-             height: 70px; /* Ajuste o tamanho do logo */
-             margin-bottom: 0.5rem; /* Espaço entre logo e título */
+             height: 90px;
+             margin-bottom: 1rem;
+             filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));
         }
-
         .header-title {
             text-align: center;
-            margin: 0;
-            padding: 0;
-            color: #2c3e50; /* Cor escura para o título */
-            font-size: 1.8rem; /* Tamanho do título */
-            font-weight: 600;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.4rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.5px;
+            margin: 0 !important;
         }
 
-        /* Estilos para as abas */
+        /* Glassmorphism nos Containers (Caixas) */
+        [data-testid="stVerticalBlock"] > [style*="border: 1px solid rgba(49, 51, 63, 0.2)"],
+        [data-testid="stVerticalBlock"] > [style*="border: 1px solid rgba(250, 250, 250, 0.2)"] {
+            background: rgba(30, 41, 59, 0.5) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+            padding: 2rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Estilos das Abas (Tabs) Modernas */
         .stTabs [data-baseweb="tab-list"] {
-            gap: 10px;
-            background-color: #e9ecef; /* Fundo da barra de abas */
-            padding: 5px;
-            border-radius: 6px;
+            gap: 15px;
+            background-color: transparent !important;
+            border: none;
+            justify-content: center;
+            padding-bottom: 20px;
         }
         .stTabs [data-baseweb="tab"] {
-            height: 45px; /* Altura da aba */
-            white-space: pre-wrap; /* Permite quebra de linha se necessário */
-            background-color: #f8f9fa; /* Fundo da aba inativa */
-            border-radius: 4px;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            border: none; /* Remove borda padrão */
-            font-weight: 500;
+            background-color: rgba(30, 41, 59, 0.6) !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            border-radius: 30px !important;
+            padding: 10px 25px !important;
+            color: #94a3b8 !important;
+            font-weight: 600 !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .stTabs [aria-selected="true"] {
-             background-color: #007bff; /* Azul mais vibrante para aba ativa */
-             color: white;
-             box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+             color: white !important;
+             box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.6) !important;
+             transform: translateY(-2px);
+             border: none !important;
         }
         .stTabs [data-baseweb="tab"]:hover {
-            background-color: #dee2e6; /* Cor ao passar o mouse */
-             color: #333;
+             background-color: rgba(59, 130, 246, 0.1) !important;
+             color: #f1f5f9 !important;
         }
-         .stTabs [aria-selected="true"]:hover {
-             background-color: #0056b3; /* Cor mais escura ao passar mouse na ativa */
-             color: white;
-         }
 
-        /* Estilos para botões */
-        .stButton>button {
-            border-radius: 5px;
-            padding: 10px 20px; /* Botões maiores */
-            font-size: 1rem;
-            transition: all 0.2s ease-in-out;
-            border: none; /* Remove borda padrão */
-        }
+        /* Botões Primários (Gradiente Esmeralda) */
         .stButton>button[kind="primary"] {
-            background-color: #28a745; /* Verde para botões primários */
-            color: white;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            padding: 0.75rem 1.5rem !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3) !important;
+            width: 100%;
         }
-         .stButton>button[kind="primary"]:hover {
-            background-color: #218838; /* Verde mais escuro no hover */
-             box-shadow: 0 2px 5px rgba(40, 167, 69, 0.4);
-             transform: translateY(-1px);
+        .stButton>button[kind="primary"]:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.4) !important;
         }
-         .stButton>button[kind="secondary"] {
-            background-color: #6c757d; /* Cinza para botões secundários */
-            color: white;
+
+        /* Botões Secundários */
+        .stButton>button[kind="secondary"] {
+            background: rgba(51, 65, 85, 0.6) !important;
+            color: #f8fafc !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            transition: all 0.3s ease !important;
+            width: 100%;
         }
         .stButton>button[kind="secondary"]:hover {
-            background-color: #5a6268;
-             box-shadow: 0 2px 5px rgba(108, 117, 125, 0.4);
-             transform: translateY(-1px);
+            background: rgba(71, 85, 105, 0.9) !important;
+            transform: translateY(-2px);
         }
-        /* Estilo específico para botão de download se necessário */
+
+        /* Botão de Download (Azul Cyan) */
         .stDownloadButton>button {
-            background-color: #17a2b8; /* Azul claro para download */
-            color: white;
-            width: 100%; /* Ocupar largura total do container */
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            width: 100% !important;
+            box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.3) !important;
+            transition: transform 0.2s ease !important;
         }
-         .stDownloadButton>button:hover {
-            background-color: #138496;
-             box-shadow: 0 2px 5px rgba(23, 162, 184, 0.4);
-             transform: translateY(-1px);
-         }
-
-
-        /* Melhorar aparência de st.container(border=True) */
-        [data-testid="stVerticalBlock"] > [style*="border: 1px solid rgba(49, 51, 63, 0.2)"] {
-            border-radius: 8px; /* Bordas arredondadas */
-            padding: 1.5rem 1.5rem 1rem 1.5rem; /* Espaçamento interno */
-            background-color: #ffffff; /* Fundo branco */
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sombra suave */
-            margin-bottom: 1.5rem; /* Espaço abaixo do container */
+        .stDownloadButton>button:hover {
+             transform: translateY(-3px) !important;
+             box-shadow: 0 20px 25px -5px rgba(6, 182, 212, 0.4) !important;
         }
 
-        /* Rodapé */
+        /* Inputs e Caixa de Arquivo */
+        input[type="text"], input[type="number"], .stNumberInput > div > div > input {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important;
+            border-radius: 8px !important;
+        }
+        
+        .stSelectbox > div > div > div {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important;
+            border-radius: 8px !important;
+        }
+
+        /* Caixa de Upload do Streamlit */
+        [data-testid="stFileUploadDropzone"] {
+            background: rgba(15, 23, 42, 0.3) !important;
+            border: 2px dashed rgba(255,255,255,0.15) !important;
+            border-radius: 16px !important;
+            transition: all 0.3s ease !important;
+        }
+        [data-testid="stFileUploadDropzone"]:hover {
+            border-color: #3b82f6 !important;
+            background: rgba(59, 130, 246, 0.05) !important;
+        }
+
+        /* Ajuste no rodapé do seu código */
         .footer {
             margin-top: 3rem;
             padding: 1.5rem 0;
-            border-top: 1px solid #dee2e6; /* Linha divisória mais sutil */
+            border-top: 1px solid rgba(255,255,255,0.05);
             text-align: center;
-            color: #6c757d; /* Cinza escuro para o texto */
+            color: #64748b;
             font-size: 0.85rem;
-        }
-        .footer p {
-            margin-bottom: 0.3rem; /* Menos espaço entre parágrafos no footer */
         }
     </style>
     """, unsafe_allow_html=True)
@@ -421,15 +466,14 @@ def render_header():
 render_header()
 
 # --- Inicialização do Estado da Sessão ---
-# Necessário para controlar a aba ativa e armazenar dados entre abas
 if 'current_tab' not in st.session_state:
-    st.session_state['current_tab'] = "Upload" # Usar nomes descritivos
+    st.session_state['current_tab'] = "Upload"
 if 'planilha_data' not in st.session_state:
-    st.session_state['planilha_data'] = None # Armazenar o DataFrame aqui
+    st.session_state['planilha_data'] = None 
 if 'planilha_nome' not in st.session_state:
     st.session_state['planilha_nome'] = None
 if 'modelos_info' not in st.session_state:
-    st.session_state['modelos_info'] = {} # Dicionário {nome: bytes}
+    st.session_state['modelos_info'] = {} 
 if 'dados_linha_selecionada' not in st.session_state:
     st.session_state['dados_linha_selecionada'] = None
 if 'modelo_selecionado_nome' not in st.session_state:
@@ -446,20 +490,18 @@ tab_upload, tab_selecao, tab_geracao = st.tabs([
 # --- Aba 1: Upload de Arquivos ---
 with tab_upload:
     st.header("Passo 1: Faça o Upload dos Arquivos Necessários")
-    st.markdown("---") # Linha divisória
+    st.markdown("---")
 
-    # Seção para Upload da Planilha
     with st.container(border=True):
         st.subheader("Planilha de Propostas (.ods, .xlsx, .xls)")
         st.caption("Selecione a planilha que contém os dados para preencher as propostas.")
         arquivo_planilha = st.file_uploader(
             "Upload da Planilha",
             type=["ods", "xlsx", "xls"],
-            key="planilha_upload_widget", # Chave única para o widget
+            key="planilha_upload_widget", 
             label_visibility="collapsed"
         )
         if arquivo_planilha:
-             # Processa e armazena na sessão imediatamente após o upload
              try:
                   planilha_bytes = arquivo_planilha.getvalue()
                   engine = 'odf' if arquivo_planilha.name.endswith('.ods') else None
@@ -469,13 +511,11 @@ with tab_upload:
                   st.success(f"✅ Planilha '{arquivo_planilha.name}' carregada com sucesso ({len(df)} linhas).")
              except Exception as e:
                   st.error(f"❌ Erro ao ler a planilha: {e}")
-                  st.session_state['planilha_data'] = None # Limpa em caso de erro
+                  st.session_state['planilha_data'] = None 
                   st.session_state['planilha_nome'] = None
 
+    st.divider()
 
-    st.divider() # Divisor visual
-
-    # Seção para Upload dos Modelos
     with st.container(border=True):
         st.subheader("Modelos de Proposta (.odt)")
         st.caption("Selecione um ou mais arquivos de modelo no formato ODT.")
@@ -483,22 +523,19 @@ with tab_upload:
             "Upload de Modelos ODT",
             type=["odt"],
             accept_multiple_files=True,
-            key="modelos_upload_widget", # Chave única
+            key="modelos_upload_widget", 
             label_visibility="collapsed"
         )
         if arquivos_modelo:
-             # Limpa modelos antigos e armazena os novos
              st.session_state['modelos_info'] = {modelo.name: modelo.getvalue() for modelo in arquivos_modelo}
              st.success(f"✅ {len(arquivos_modelo)} modelo(s) ODT carregado(s): {', '.join(st.session_state['modelos_info'].keys())}")
 
-
     st.divider()
 
-    # Botão para avançar (só habilita se ambos os uploads foram feitos)
     if st.session_state['planilha_data'] is not None and st.session_state['modelos_info']:
         if st.button("Avançar para Seleção de Dados →", type="primary", key="goto_selecao"):
             st.session_state['current_tab'] = "Seleção"
-            st.rerun() # Força a reexecução para mudar de aba
+            st.rerun() 
     else:
          st.info("ℹ️ Por favor, faça o upload da planilha E de pelo menos um modelo ODT para continuar.")
 
@@ -508,7 +545,6 @@ with tab_selecao:
     st.header("Passo 2: Selecione os Dados para a Proposta")
     st.markdown("---")
 
-    # Verifica se os dados necessários da aba anterior existem
     if st.session_state['planilha_data'] is None or not st.session_state['modelos_info']:
         st.warning("⚠️ Volte ao Passo 1 e faça o upload da planilha e dos modelos ODT.")
         if st.button("← Voltar para Upload", key="back_to_upload_selecao"):
@@ -517,13 +553,11 @@ with tab_selecao:
     else:
         df = st.session_state['planilha_data']
 
-        # Visualização da Planilha Carregada
         with st.expander("👁️ Visualizar Planilha Carregada", expanded=False):
-             st.dataframe(df, use_container_width=True, height=300) # Limita altura
+             st.dataframe(df, use_container_width=True, height=300) 
 
         st.divider()
 
-        # Seleção da Linha e do Modelo em Colunas
         col_linha, col_modelo = st.columns(2)
 
         with col_linha:
@@ -531,34 +565,28 @@ with tab_selecao:
                 st.subheader("Selecione a Linha da Planilha")
                 st.caption("Escolha a linha que contém os dados para esta proposta específica.")
 
-                # Input para número da linha (base 1 para o usuário)
                 linha_selecionada_usuario = st.number_input(
-                     f"Número da linha (de 2 a {len(df) + 1}):", # Mostra o total de linhas + 1 (porque a primeira linha é header)
+                     f"Número da linha (de 2 a {len(df) + 1}):", 
                      min_value=2,
                      max_value=len(df) + 1,
-                     value=st.session_state.get('last_selected_line', 2), # Lembra última linha selecionada
+                     value=st.session_state.get('last_selected_line', 2), 
                      step=1,
                      key="linha_input_selecao"
                  )
 
-                # Converte para índice baseado em zero (0 = primeira linha de dados)
                 linha_indice_zero = linha_selecionada_usuario - 2
 
                 if 0 <= linha_indice_zero < len(df):
-                     # Armazena os dados da linha selecionada (como dicionário) e a linha selecionada
                      st.session_state['dados_linha_selecionada'] = df.iloc[linha_indice_zero].fillna('').to_dict()
-                     st.session_state['last_selected_line'] = linha_selecionada_usuario # Salva para próxima vez
+                     st.session_state['last_selected_line'] = linha_selecionada_usuario
 
-                     # Mostra um preview dos dados selecionados
                      with st.expander("🔍 Pré-visualizar Dados da Linha Selecionada", expanded=True):
-                          # Mostra alguns campos chave
                           preview_data = {k: v for k, v in st.session_state['dados_linha_selecionada'].items() if k in ['Cliente', 'Modelo', 'Valor Rompedor', 'Valor Kit', 'Data']}
                           st.dataframe(pd.Series(preview_data).astype(str), use_container_width=True)
 
                 else:
                      st.error(f"❌ Linha {linha_selecionada_usuario} inválida. Selecione um valor entre 2 e {len(df) + 1}.")
-                     st.session_state['dados_linha_selecionada'] = None # Limpa se a linha for inválida
-
+                     st.session_state['dados_linha_selecionada'] = None 
 
         with col_modelo:
              with st.container(border=True):
@@ -570,10 +598,10 @@ with tab_selecao:
                       modelo_selecionado = st.selectbox(
                            "Modelos Disponíveis:",
                            options=nomes_modelos,
-                           index=nomes_modelos.index(st.session_state.get('modelo_selecionado_nome', nomes_modelos[0])) if st.session_state.get('modelo_selecionado_nome') in nomes_modelos else 0, # Lembra último selecionado
+                           index=nomes_modelos.index(st.session_state.get('modelo_selecionado_nome', nomes_modelos[0])) if st.session_state.get('modelo_selecionado_nome') in nomes_modelos else 0,
                            key="modelo_select_widget"
                       )
-                      st.session_state['modelo_selecionado_nome'] = modelo_selecionado # Armazena o nome do modelo selecionado
+                      st.session_state['modelo_selecionado_nome'] = modelo_selecionado
                       st.info(f"📄 Modelo selecionado: **{modelo_selecionado}**")
                  else:
                       st.error("Nenhum modelo ODT encontrado. Volte ao Passo 1.")
@@ -581,7 +609,6 @@ with tab_selecao:
 
         st.divider()
 
-        # Botões de Navegação
         col_btn_back, col_btn_next = st.columns(2)
         with col_btn_back:
             if st.button("← Voltar para Upload", key="back_to_upload_selecao_2", use_container_width=True):
@@ -589,13 +616,12 @@ with tab_selecao:
                 st.rerun()
 
         with col_btn_next:
-             # Habilita o botão de avançar apenas se linha e modelo válidos foram selecionados
              if st.session_state['dados_linha_selecionada'] is not None and st.session_state['modelo_selecionado_nome'] is not None:
                  if st.button("Avançar para Gerar Proposta →", type="primary", key="goto_geracao", use_container_width=True):
                      st.session_state['current_tab'] = "Geração"
                      st.rerun()
              else:
-                  st.button("Avançar para Gerar Proposta →", type="primary", key="goto_geracao_disabled", use_container_width=True, disabled=True) # Botão desabilitado
+                  st.button("Avançar para Gerar Proposta →", type="primary", key="goto_geracao_disabled", use_container_width=True, disabled=True)
 
 
 # --- Aba 3: Gerar Proposta ---
@@ -603,7 +629,6 @@ with tab_geracao:
     st.header("Passo 3: Revise e Gere a Proposta em PDF")
     st.markdown("---")
 
-    # Verifica se os dados necessários das abas anteriores existem
     if st.session_state.get('dados_linha_selecionada') is None or st.session_state.get('modelo_selecionado_nome') is None:
         st.warning("⚠️ Por favor, complete os Passos 1 e 2 primeiro (selecione uma linha válida e um modelo).")
         if st.button("← Voltar para Seleção", key="back_to_selecao_geracao"):
@@ -617,13 +642,10 @@ with tab_geracao:
         if not modelo_bytes:
              st.error(f"❌ Erro: Modelo ODT '{nome_modelo_selecionado}' não encontrado na memória. Volte ao Passo 1.")
         else:
-
-            # Container para Revisão
             with st.container(border=True):
                 st.subheader("Revisão das Informações")
-                substituicoes = criar_substituicoes(dados_linha) # Gera as substituições
+                substituicoes = criar_substituicoes(dados_linha)
 
-                # Mostra informações chave em colunas
                 col_rev1, col_rev2 = st.columns(2)
                 with col_rev1:
                      st.markdown("**Cliente e Contato:**")
@@ -637,90 +659,74 @@ with tab_geracao:
                      st.text_input("Valor Rompedor:", value=substituicoes.get("<Valor Rompedor>", ""), disabled=True, key="rev_val_romp")
                      st.text_input("Valor Kit:", value=substituicoes.get("<Valor Kit>", ""), disabled=True, key="rev_val_kit")
 
-
-                # Expander para ver todas as substituições
                 with st.expander("Ver todas as substituições que serão feitas no documento"):
                      substituicoes_df = pd.DataFrame({
                          'Placeholder no Documento': list(substituicoes.keys()),
-                         'Valor a ser Inserido': [str(v) for v in substituicoes.values()] # Garante que tudo é string
+                         'Valor a ser Inserido': [str(v) for v in substituicoes.values()] 
                      })
                      st.dataframe(substituicoes_df, hide_index=True, use_container_width=True)
 
-
             st.divider()
 
-            # Botão para Gerar o PDF
             if st.button("🚀 Gerar Documento PDF Agora", type="primary", key="generate_pdf_final", use_container_width=True):
-                 # ---> INÍCIO DA MODIFICAÇÃO <---
-                 pdf_bytes_result = None  # Variável para guardar os bytes do PDF gerado
-                 pdf_filename_result = None # Variável para guardar o nome do arquivo
+                 pdf_bytes_result = None  
+                 pdf_filename_result = None 
 
-                 # Usar st.status para mostrar o progresso
                  with st.status("⚙️ Iniciando geração da proposta...", expanded=True) as status:
                     try:
                         status.update(label="1/4 - Extraindo conteúdo do modelo ODT...")
-                        st.write(f"📄 Usando modelo: {nome_modelo_selecionado}")
                         content_xml = extrair_conteudo_odt(modelo_bytes)
-                        if not content_xml:
-                             raise ValueError("Falha ao extrair 'content.xml' do modelo ODT.")
-                        st.write("✅ Conteúdo extraído.")
+                        if not content_xml: raise ValueError("Falha ao extrair 'content.xml' do modelo ODT.")
 
                         status.update(label="2/4 - Aplicando substituições nos dados...")
                         content_xml_modificado, num_substituicoes = substituir_no_xml(content_xml, substituicoes)
-                        if num_substituicoes == 0:
-                             st.warning("⚠️ Nenhuma substituição foi feita. Verifique placeholders no modelo ODT.")
-                        # Mesmo que 0 substituições, continua o processo, pode ser intencional
-                        st.write(f"✅ {num_substituicoes} substituições realizadas.")
-
 
                         status.update(label="3/4 - Recriando arquivo ODT modificado...")
                         documento_odt_modificado = criar_odt_modificado(modelo_bytes, content_xml_modificado)
-                        if not documento_odt_modificado:
-                             raise ValueError("Falha ao recriar o arquivo ODT modificado.")
-                        st.write("✅ Documento ODT modificado criado.")
+                        if not documento_odt_modificado: raise ValueError("Falha ao recriar o arquivo ODT modificado.")
 
-                        # Define o nome do arquivo PDF (FUNCIONALIDADE ORIGINAL MANTIDA)
-                        nome_base = dados_linha.get("NOME DO ARQUIVO")
-                        if not nome_base:
-                             nome_cliente = str(dados_linha.get('Cliente', 'Proposta')).replace(' ', '_').replace('/','-')
-                             nome_base = f"Proposta_{nome_cliente}_{datetime.now().strftime('%Y%m%d')}"
-                        nome_arquivo_pdf = f"{nome_base}.pdf"
+                        # AQUI ESTÁ A IMPLEMENTAÇÃO DO NOME DA ÚLTIMA COLUNA
+                        try:
+                            # Pega todos os nomes das colunas da planilha
+                            colunas = list(st.session_state['planilha_data'].columns)
+                            ultima_coluna = colunas[-1]
+                            # Pega o valor da ultima coluna
+                            nome_base_desejado = dados_linha.get(ultima_coluna, "")
+                            if not nome_base_desejado or pd.isna(nome_base_desejado):
+                                nome_cliente = str(dados_linha.get('Cliente', 'Proposta')).replace(' ', '_').replace('/','-')
+                                nome_base_desejado = f"Proposta_{nome_cliente}_{datetime.now().strftime('%Y%m%d')}"
+                        except Exception:
+                            # Fallback original
+                            nome_base_desejado = dados_linha.get("NOME DO ARQUIVO", "Proposta_Gerada")
+                        
+                        nome_arquivo_pdf = f"{nome_base_desejado}.pdf"
 
                         status.update(label=f"4/4 - Convertendo para PDF ('{nome_arquivo_pdf}')... (pode levar alguns segundos)")
-                        pdf_bytes = converter_para_pdf(documento_odt_modificado, nome_base)
-                        if not pdf_bytes:
-                             raise ValueError("Falha ao converter o documento ODT para PDF usando LibreOffice.")
+                        pdf_bytes = converter_para_pdf(documento_odt_modificado, nome_base_desejado)
+                        if not pdf_bytes: raise ValueError("Falha ao converter o documento ODT para PDF usando LibreOffice.")
 
-                        # Armazena os resultados nas variáveis locais se tudo deu certo
                         pdf_bytes_result = pdf_bytes
                         pdf_filename_result = nome_arquivo_pdf
 
-                        # Atualiza o status para sucesso (recolhido)
                         status.update(label="🎉 Proposta gerada com sucesso!", state="complete", expanded=False)
-                        # NÃO coloca o botão de download aqui dentro
 
                     except (ValueError, Exception) as e:
-                        # Se qualquer etapa falhar, atualiza o status para erro (expandido)
                         status.update(label=f"❌ Erro ao gerar proposta: {str(e)}", state="error", expanded=True)
-                        # st.error(f"Detalhes: {str(e)}") # O erro já aparece no status expandido
 
-                 # --- Botão de Download FORA do bloco 'with st.status' ---
-                 # Verifica se as variáveis de resultado foram preenchidas (indicando sucesso)
                  if pdf_bytes_result and pdf_filename_result:
-                      st.success(f"✅ Documento '{pdf_filename_result}' pronto!") # Mensagem de sucesso visível
+                      st.success(f"✅ Documento '{pdf_filename_result}' pronto!") 
                       st.download_button(
                            label=f"📥 Baixar {pdf_filename_result}",
                            data=pdf_bytes_result,
                            file_name=pdf_filename_result,
                            mime="application/pdf",
-                           key="download_pdf_final_btn", # Pode manter a mesma chave
+                           key="download_pdf_final_btn", 
                            use_container_width=True,
-                           type="primary" # Destaca o botão de download
+                           type="primary" 
                       )
 
             st.divider()
 
-            # Botões de Navegação inferiores
             col_btn_back_geracao, col_btn_new_geracao = st.columns(2)
             with col_btn_back_geracao:
                  if st.button("← Voltar para Seleção", key="back_to_selecao_geracao_2", use_container_width=True):
@@ -728,19 +734,15 @@ with tab_geracao:
                       st.rerun()
             with col_btn_new_geracao:
                  if st.button("✨ Iniciar Nova Proposta (Voltar ao Início)", key="new_proposal_geracao", use_container_width=True):
-                      # Limpa estado da sessão relevante para uma nova proposta, mas mantém modelos carregados
                       st.session_state['current_tab'] = "Upload"
                       st.session_state['planilha_data'] = None
                       st.session_state['planilha_nome'] = None
-                      # Mantém st.session_state['modelos_info']
                       st.session_state['dados_linha_selecionada'] = None
                       st.session_state['modelo_selecionado_nome'] = None
-                      if 'last_selected_line' in st.session_state: del st.session_state['last_selected_line'] # Reseta a linha lembrada
+                      if 'last_selected_line' in st.session_state: del st.session_state['last_selected_line'] 
                       st.rerun()
 
-
-# --- Rodapé (Mantido) ---
-st.markdown("---") # Linha divisória antes do rodapé
+st.markdown("---") 
 st.markdown("""
 <div class="footer">
     <p>Jardim Equipamentos - Gerador de Propostas Comerciais</p>
@@ -748,33 +750,22 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- Script para Navegação entre Tabs (CORRIGIDO) ---
-# Este script JS ainda é uma forma comum de controlar as abas programaticamente
-# Mapeia os nomes das abas para índices (0, 1, 2)
 tab_map = {"Upload": 0, "Seleção": 1, "Geração": 2}
-current_tab_index = tab_map.get(st.session_state['current_tab'], 0) # Pega o índice da aba atual
+current_tab_index = tab_map.get(st.session_state['current_tab'], 0) 
 
-if st.session_state['current_tab'] != "Upload": # Só executa se não for a primeira aba
+if st.session_state['current_tab'] != "Upload": 
     js = f"""
     <script>
         function selectTab() {{
             const tabIndex = {current_tab_index};
-            // Seleciona os botões das abas DENTRO do iframe pai onde o Streamlit renderiza
             const tabs = parent.document.querySelectorAll('button[data-baseweb="tab"]');
-
-            // Verifica se o número de abas encontrado é maior que o índice desejado
             if (tabs && tabs.length > tabIndex) {{
-                // Clica na aba correta
                 tabs[tabIndex].click();
             }} else {{
-                 // Log de aviso no console do navegador se a aba não for encontrada
-                 // CORRIGIDO: Usando vírgulas para separar argumentos no console.warn
                  console.warn('Streamlit Tabs:', 'Tab index', tabIndex, 'not found or tabs not rendered yet. Available tabs:', tabs ? tabs.length : 0);
              }}
         }}
-        // Executa a função 'selectTab' após um pequeno atraso (150ms)
-        // para dar tempo ao Streamlit de renderizar os elementos das abas no DOM.
-         if (window.parent) {{ // Garante que estamos em um contexto de iframe
+         if (window.parent) {{ 
             setTimeout(selectTab, 150);
          }}
     </script>

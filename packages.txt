@@ -1,3 +1,4 @@
 libreoffice
+libreoffice-writer
+default-jre
 fonts-liberation
-fonts-dejavu
